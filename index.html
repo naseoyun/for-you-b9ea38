@@ -6,7 +6,7 @@
 <!-- 검색엔진에 노출되지 않게 막아둡니다 -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#f7f0e3">
-<title>생일 축하해</title>
+<title>생일 축하해, 서린아</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
@@ -141,27 +141,30 @@
     transform:translateX(-50%) rotate(-3deg);
     background:rgba(233,214,178,.75); box-shadow:0 1px 2px rgba(0,0,0,.06);
   }
-  .polaroid .img{aspect-ratio:4/5; background:var(--paper-2); overflow:hidden}
-  .polaroid img{width:100%; height:100%; object-fit:cover; display:block}
-  .polaroid .img.empty{display:grid; place-items:center; font-family:var(--hand); font-size:1.6rem; color:var(--ink-soft)}
-  .polaroid figcaption{margin-top:10px; text-align:center}
+  .polaroid.tall{width:min(220px,60vw)}
+  .polaroid .img{min-height:200px; background:var(--paper-2); overflow:hidden}
+  .polaroid .img.loaded{min-height:0; background:none}
+  .polaroid img{width:100%; height:auto; display:block}
+  .polaroid .img.empty{aspect-ratio:4/5; display:grid; place-items:center; font-family:var(--hand); font-size:1.6rem; color:var(--ink-soft)}
+  .polaroid figcaption{margin-top:10px; text-align:center; word-break:keep-all}
   .polaroid .cap{font-family:var(--hand); font-size:1.55rem; line-height:1.2}
   .polaroid .date{font-family:var(--hand); font-size:1.15rem; color:var(--ink-soft); margin-top:2px}
 
   /* 편지지 */
   .paper{
-    --lh:2.25rem;
+    --lh:2.2rem;
     position:relative; background-color:var(--card);
-    padding:40px 22px 44px 38px; border-radius:3px;
+    padding:40px 18px 44px 36px; border-radius:3px;
     box-shadow:0 10px 30px rgba(75,58,47,.14), 0 1px 3px rgba(75,58,47,.08);
     background-image:linear-gradient(transparent calc(var(--lh) - 1px), var(--line) calc(var(--lh) - 1px));
     background-size:100% var(--lh);
     background-position:0 40px;
-    font-family:var(--hand); font-size:1.6rem; line-height:var(--lh);
+    font-family:var(--hand); font-size:1.5rem; line-height:var(--lh);
     rotate:-.4deg;
   }
   .paper::before{content:""; position:absolute; top:0; bottom:0; left:26px; width:1.5px; background:var(--rose-soft)}
-  .paper p{margin-bottom:var(--lh); word-break:keep-all}
+  .paper p{margin-bottom:var(--lh); word-break:keep-all; white-space:pre-line}
+  .paper p.em{color:var(--rose); text-align:center}
   .paper .greet{color:var(--rose)}
   .paper .sign{text-align:right; margin:0}
 
@@ -259,33 +262,48 @@
    ✏️ 여기만 고치면 돼요
    ========================================================== */
 const CONFIG = {
-  name: "○○",              // 봉투·편지에 쓸 이름 (예: 지연)
-  call: "○○아",            // 부르는 말 (예: 지연아, 수아야)
-  from: "○○",              // 보내는 사람 (예: 민수)
-  birthday: "2026. 10. 27", // 생일 날짜
+  name: "서린",              // 봉투에 쓸 이름
+  nameTo: "서린이",          // "~에게"에 붙는 이름
+  call: "서린아",            // 첫 화면에서 부르는 말
+  from: "서윤",              // 보내는 사람
+  birthday: "2026. 10. 22",  // 생일 날짜
 
   // 비밀번호. 비워두면("") 바로 봉투 화면부터 시작해요.
   password: "",
-  passwordHint: "우리가 처음 만난 날은? (숫자 4자리)",
+  passwordHint: "",
 
-  // 사진: photos 폴더에 넣고 파일명을 정확히 적어주세요.
-  // ⚠️ GitHub는 대소문자를 구분해요 (01.JPG ≠ 01.jpg)
+  // 사진 (photos 폴더, 날짜순)
   photos: [
-    { src: "photos/01.jpg", caption: "처음 같이 간 곳",     date: "2025. 03. 15" },
-    { src: "photos/02.jpg", caption: "이날 너무 웃겼던 너", date: "2025. 05. 02" },
-    { src: "photos/03.jpg", caption: "여름 바다",           date: "2025. 08. 10" },
-    { src: "photos/04.jpg", caption: "작년 네 생일",        date: "2025. 10. 27" },
+    { src: "photos/01.jpg", caption: "우리 처음 만난 날, 사랑해",       date: "2026. 08. 25" },
+    { src: "photos/02.jpg", caption: "회색 커플ㅎㅎ",                    date: "2026. 09. 03" },
+    { src: "photos/03.jpg", caption: "인하대 주점! 이때 와줘서 고마워",  date: "2026. 09. 10" },
+    { src: "photos/04.jpg", caption: "드디어 우리 1일..",                date: "2026. 09. 13" },
+    { src: "photos/05.jpg", caption: "처음 전시회 본 날",                date: "2026. 09. 18" },
+    { src: "photos/06.jpg", caption: "피자 먹은 날, 젤 좋아하는 사진",   date: "2026. 10. 01" },
+    { src: "photos/07.jpg", caption: "강아지보다 더 귀여운 서린",        date: "2026. 10. 05" },
+    { src: "photos/08.jpg", caption: "또 먹고싶다,,,",                   date: "2026. 10. 09" },
+    { src: "photos/09.jpg", caption: "강릉 마무리ㅠㅠ",                  date: "2026. 10. 09" },
   ],
 
-  // 편지: 문단마다 따옴표 하나씩. 줄바꿈은 자동이에요.
+  // 편지: 따옴표 하나가 한 문단, \n은 줄바꿈, 맨 앞에 *를 붙이면 강조 문장
   letter: [
-    "생일 축하해. 이 편지를 쓰려고 몇 번이나 지웠다가 다시 썼는지 몰라.",
-    "너랑 함께한 하루하루가 나한테는 다 선물 같았어. 별것 아닌 날에도 네가 있으면 특별한 날이 되더라.",
-    "올해도 내 옆에 있어줘서 정말 고마워. 앞으로 맞는 모든 생일도 내가 제일 먼저 축하해 줄게.",
+    "서린아, 이벤트 어땠어? ㅎㅎ\n기억에 남는 생일이면 좋겠어서\n특이하게 준비했어!",
+    "마음 같아선 생일 하루 종일\n축하해 주고 싶은데\n그러지 못해서 너무 아쉬워.",
+    "*생일 너무너무 축하해",
+    "처음 편지를 쓸 때,\n서린이한테 고백하는 상상을 하면서 썼어.\n그땐 생각만 해도 떨리고,\n부담스럽진 않을까 걱정도 됐어.",
+    "편지를 쓰면서 글은 최대한 담백하게,\n좋아한다는 진심이\n잘 전달되길 바랐었어.",
+    "그리고 또 이렇게 편지를 쓰는 지금은\n내가 엄청 많이 사랑한다는 게\n잘 전해졌으면 좋겠어.",
+    "좀 부끄럽지만,\n이렇게 좋아하는 사람은\n서린이 너가 처음이야.",
+    "그 이유에 대해 생각해 봤는데\n여러 가지가 있었어.",
+    "전에 동아리 끝나구\n남은 맥주 챙겨 온 모습에서\n정말 알뜰한 모습에 반했고,\n내가 재미없는 말을 해도\n계속 웃어주구,\n내가 밥 산다고 해도\n자기가 사겠다고 우기고.",
+    "이런 많은 모습들이\n너무 귀엽고 사랑스러워.",
+    "내가 남자친구로서\n서린이 생일을 축하해 줄 수 있어서\n너무 기뻐.",
+    "이 편지 읽을 때면\n생일이 거의 다 지나가 있을 텐데,\n남은 시간도 행복하게 지내!\n편지 읽구 더 행복했음 좋겠다 ㅎㅎ",
+    "*생일 너무너무 축하하구\n너무너무 사랑해",
   ],
-  sign: "너를 사랑하는 ○○가",
+  sign: "서린이를 사랑하는 서윤이가",
 
-  ending: "태어나줘서 고마워",
+  ending: "태어나줘서 고마워, 서린아",
 };
 /* ========================================================== */
 
@@ -296,7 +314,7 @@ let opened = false;
 function fill(){
   document.title = `생일 축하해, ${CONFIG.call}`;
   $('#gate-hint').textContent = CONFIG.passwordHint;
-  $('#intro-title').textContent = `${CONFIG.name}에게 편지가 도착했어요`;
+  $('#intro-title').textContent = `${CONFIG.nameTo}에게 편지가 도착했어요`;
   $('#env-card').textContent = `To. ${CONFIG.name}`;
   $('#hero-date').textContent = CONFIG.birthday;
   $('#hero-name').textContent = CONFIG.call;
@@ -313,10 +331,13 @@ function fill(){
     const box = document.createElement('div');
     box.className = 'img';
     const img = new Image();
-    img.loading = 'lazy';
-    img.decoding = 'async';
+        img.decoding = 'async';
     img.alt = p.caption || '';
     img.onerror = () => { box.classList.add('empty'); box.textContent = `사진 ${String(i + 1).padStart(2, '0')}`; };
+    img.onload = () => {
+      box.classList.add('loaded');
+      if (img.naturalHeight / img.naturalWidth > 1.6) fig.classList.add('tall');
+    };
     img.src = p.src;
     box.appendChild(img);
 
@@ -331,9 +352,14 @@ function fill(){
   const paper = $('#paper');
   const greet = document.createElement('p');
   greet.className = 'greet';
-  greet.textContent = `${CONFIG.name}에게`;
+  greet.textContent = `사랑하는 ${CONFIG.nameTo}에게`;
   paper.appendChild(greet);
-  CONFIG.letter.forEach(t => { const p = document.createElement('p'); p.textContent = t; paper.appendChild(p); });
+  CONFIG.letter.forEach(t => {
+    const p = document.createElement('p');
+    if (t.startsWith('*')){ p.className = 'em'; t = t.slice(1); }
+    p.textContent = t;
+    paper.appendChild(p);
+  });
   const sign = document.createElement('p');
   sign.className = 'sign';
   sign.textContent = CONFIG.sign;

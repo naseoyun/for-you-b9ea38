@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 검색엔진에 노출되지 않게 막아둡니다 -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f0e3">
+<title>생일 축하해</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f0e3;
+    --paper-2:#ede1cb;
+    --card:#fffaf1;
+    --ink:#4b3a2f;
+    --ink-soft:#8a7464;
+    --rose:#c4766a;
+    --rose-soft:#e9bcb0;
+    --leaf:#7f8d6b;
+    --kraft:#d8b78b;
+    --kraft-dark:#c09a68;
+    --line:#e2d3b9;
+    --hand:'Nanum Pen Script', cursive;
+    --serif:'Gowun Batang', serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100vh;
+    background-color:var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 20% 0%, #fbf6ec 0%, transparent 60%),
+      radial-gradient(ellipse at 100% 100%, #efe2cc 0%, transparent 55%);
+    color:var(--ink);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  [hidden]{display:none !important}
+
+  /* ---------- 공통 화면 ---------- */
+  .screen{
+    min-height:100vh; min-height:100svh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 20px calc(32px + env(safe-area-inset-bottom));
+    text-align:center;
+    transition:opacity .7s ease;
+  }
+  .screen.fade{opacity:0}
+  .hand{font-family:var(--hand)}
+
+  /* ---------- 비밀번호 ---------- */
+  .gate h1{font-family:var(--hand); font-size:2.4rem; font-weight:400; margin-bottom:6px}
+  .gate p{color:var(--ink-soft); font-size:.95rem; margin-bottom:22px}
+  .gate form{display:flex; gap:8px; width:min(300px,100%)}
+  .gate input{
+    flex:1; min-width:0; padding:12px 14px; border:1.5px solid var(--line); border-radius:10px;
+    background:var(--card); color:var(--ink); font-family:var(--hand); font-size:1.5rem; text-align:center; outline:none;
+  }
+  .gate input:focus{border-color:var(--rose)}
+  .btn{
+    border:0; border-radius:10px; padding:12px 18px; background:var(--rose); color:#fff8f4;
+    font-family:var(--hand); font-size:1.4rem; cursor:pointer;
+  }
+  .gate .msg{height:1.6em; margin-top:12px; font-family:var(--hand); font-size:1.3rem; color:var(--rose)}
+  .shake{animation:shake .4s}
+  @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+  /* ---------- 봉투 ---------- */
+  .intro-title{font-family:var(--hand); font-size:2.2rem; margin-bottom:40px; line-height:1.2}
+  .envelope{
+    position:relative; width:min(300px,80vw); aspect-ratio:3/2; cursor:pointer;
+    perspective:900px; margin-top:40px;
+  }
+  .env-back{position:absolute; inset:0; background:var(--kraft-dark); border-radius:6px; box-shadow:0 16px 34px rgba(75,58,47,.22)}
+  .env-card{
+    position:absolute; left:7%; right:7%; top:8%; bottom:8%; z-index:1;
+    background:var(--card); border-radius:4px;
+    display:flex; align-items:flex-start; justify-content:center; padding-top:12%;
+    font-family:var(--hand); font-size:1.7rem; color:var(--ink);
+    transition:transform .9s .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .env-front{
+    position:absolute; inset:0; z-index:2; border-radius:6px;
+    background:linear-gradient(160deg, var(--kraft) 0%, #cfac7d 100%);
+    clip-path:polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env-flap{
+    position:absolute; left:0; right:0; top:0; height:62%; z-index:3;
+    background:linear-gradient(180deg, #e2c49a, var(--kraft));
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center;
+    transition:transform .55s ease, z-index 0s .28s;
+  }
+  .seal{
+    position:absolute; left:50%; top:60%; z-index:4; width:48px; height:48px; border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle at 35% 30%, #db9184, #a6513f 70%);
+    box-shadow:0 2px 6px rgba(90,30,20,.35), inset 0 0 0 4px rgba(255,255,255,.08);
+    display:grid; place-items:center; transition:opacity .3s, transform .3s;
+  }
+  .seal svg{width:20px; height:20px}
+  .envelope.open .seal{opacity:0; transform:translate(-50%,-50%) scale(.6)}
+  .envelope.open .env-flap{transform:rotateX(180deg); z-index:0}
+  .envelope.open .env-card{transform:translateY(-52%)}
+  .tap-hint{margin-top:36px; font-family:var(--hand); font-size:1.4rem; color:var(--ink-soft); animation:breathe 2.2s ease-in-out infinite}
+  .envelope.open + .tap-hint{visibility:hidden}
+  @keyframes breathe{0%,100%{opacity:.35}50%{opacity:1}}
+
+  /* ---------- 본문 ---------- */
+  main{max-width:520px; margin:0 auto; padding:0 18px calc(40px + env(safe-area-inset-bottom))}
+  section{padding:56px 0}
+
+  .hero{min-height:100vh; min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 0}
+  .sprig{width:110px; margin-bottom:10px}
+  .hero-date{font-family:var(--hand); font-size:1.35rem; color:var(--ink-soft); letter-spacing:.05em}
+  .hero h1{font-family:var(--hand); font-weight:400; font-size:3.4rem; line-height:1.1; margin:8px 0 14px}
+  .hero h1 .name{color:var(--rose)}
+  .hero-sub{font-size:.95rem; color:var(--ink-soft)}
+  .scroll-cue{margin-top:48px; width:22px; height:22px; border-right:1.5px solid var(--ink-soft); border-bottom:1.5px solid var(--ink-soft); transform:rotate(45deg); animation:drop 1.8s ease-in-out infinite}
+  @keyframes drop{0%,100%{translate:0 0; opacity:.4}50%{translate:0 8px; opacity:1}}
+
+  .section-title{text-align:center; margin-bottom:40px}
+  .section-title .hand{display:block; font-size:2.4rem; line-height:1.1}
+  .section-title small{display:block; margin-top:4px; font-size:.85rem; color:var(--ink-soft); letter-spacing:.15em}
+
+  /* 폴라로이드 */
+  .polaroid{
+    position:relative; width:min(320px,84vw); margin:0 auto 56px;
+    background:#fffdf8; padding:12px 12px 14px;
+    box-shadow:0 8px 22px rgba(75,58,47,.16), 0 1px 2px rgba(75,58,47,.1);
+    rotate:var(--r, 0deg);
+  }
+  .polaroid::before{
+    content:""; position:absolute; top:-13px; left:50%; width:92px; height:26px;
+    transform:translateX(-50%) rotate(-3deg);
+    background:rgba(233,214,178,.75); box-shadow:0 1px 2px rgba(0,0,0,.06);
+  }
+  .polaroid .img{aspect-ratio:4/5; background:var(--paper-2); overflow:hidden}
+  .polaroid img{width:100%; height:100%; object-fit:cover; display:block}
+  .polaroid .img.empty{display:grid; place-items:center; font-family:var(--hand); font-size:1.6rem; color:var(--ink-soft)}
+  .polaroid figcaption{margin-top:10px; text-align:center}
+  .polaroid .cap{font-family:var(--hand); font-size:1.55rem; line-height:1.2}
+  .polaroid .date{font-family:var(--hand); font-size:1.15rem; color:var(--ink-soft); margin-top:2px}
+
+  /* 편지지 */
+  .paper{
+    --lh:2.25rem;
+    position:relative; background-color:var(--card);
+    padding:40px 22px 44px 38px; border-radius:3px;
+    box-shadow:0 10px 30px rgba(75,58,47,.14), 0 1px 3px rgba(75,58,47,.08);
+    background-image:linear-gradient(transparent calc(var(--lh) - 1px), var(--line) calc(var(--lh) - 1px));
+    background-size:100% var(--lh);
+    background-position:0 40px;
+    font-family:var(--hand); font-size:1.6rem; line-height:var(--lh);
+    rotate:-.4deg;
+  }
+  .paper::before{content:""; position:absolute; top:0; bottom:0; left:26px; width:1.5px; background:var(--rose-soft)}
+  .paper p{margin-bottom:var(--lh); word-break:keep-all}
+  .paper .greet{color:var(--rose)}
+  .paper .sign{text-align:right; margin:0}
+
+  /* 마무리 */
+  .ending{text-align:center; padding:72px 0 40px}
+  .ending .hearts{font-size:1.3rem; letter-spacing:.6em; color:var(--rose); margin-bottom:18px}
+  .ending .end-line{font-family:var(--hand); font-size:2rem; line-height:1.3; margin-bottom:8px; word-break:keep-all}
+  .ending .end-from{font-family:var(--hand); font-size:1.4rem; color:var(--ink-soft); margin-bottom:36px}
+  .ghost{background:transparent; color:var(--ink-soft); border:1.5px solid var(--line)}
+
+  /* 스크롤 등장 효과 */
+  .reveal{opacity:0; translate:0 26px; transition:opacity .9s ease, translate .9s ease}
+  .reveal.show{opacity:1; translate:0 0}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important; transition:none !important}
+    .reveal{opacity:1; translate:0 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1) 비밀번호 화면 (CONFIG.password가 비어 있으면 건너뜀) -->
+<div class="screen gate" id="gate" hidden>
+  <h1>잠깐!</h1>
+  <p id="gate-hint"></p>
+  <form id="gate-form" autocomplete="off">
+    <input id="gate-input" inputmode="numeric" aria-label="비밀번호">
+    <button class="btn" type="submit">열기</button>
+  </form>
+  <div class="msg" id="gate-msg"></div>
+</div>
+
+<!-- 2) 봉투 화면 -->
+<div class="screen" id="intro" hidden>
+  <p class="intro-title" id="intro-title"></p>
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="편지 열기">
+    <div class="env-back"></div>
+    <div class="env-card" id="env-card"></div>
+    <div class="env-front"></div>
+    <div class="env-flap"></div>
+    <div class="seal">
+      <svg viewBox="0 0 24 24" fill="#fbe7e1"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 4.3 2.6.7-1.3 2.1-2.6 4.3-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+    </div>
+  </div>
+  <p class="tap-hint">눌러서 열어보기</p>
+</div>
+
+<!-- 3) 본문 -->
+<main id="main" hidden>
+  <section class="hero">
+    <svg class="sprig" viewBox="0 0 120 140" aria-hidden="true">
+      <defs>
+        <g id="flower">
+          <circle cx="0" cy="-7" r="5.5"/><circle cx="7" cy="-2" r="5.5"/><circle cx="4.5" cy="6" r="5.5"/>
+          <circle cx="-4.5" cy="6" r="5.5"/><circle cx="-7" cy="-2" r="5.5"/>
+        </g>
+      </defs>
+      <g fill="none" stroke="#7f8d6b" stroke-width="2" stroke-linecap="round">
+        <path d="M60 136 C58 104 54 80 38 52"/>
+        <path d="M60 136 C62 104 67 78 84 48"/>
+        <path d="M60 136 C60 108 60 84 60 38"/>
+        <path d="M51 98 C41 96 34 90 31 81"/>
+        <path d="M69 104 C79 102 86 95 89 86"/>
+      </g>
+      <g fill="#e9bcb0"><use href="#flower" x="38" y="46"/><use href="#flower" x="84" y="42"/><use href="#flower" x="60" y="30"/></g>
+      <g fill="#c4766a"><circle cx="38" cy="46" r="3"/><circle cx="84" cy="42" r="3"/><circle cx="60" cy="30" r="3"/></g>
+    </svg>
+    <p class="hero-date" id="hero-date"></p>
+    <h1>생일 축하해<br><span class="name" id="hero-name"></span></h1>
+    <p class="hero-sub">천천히 내려보면서 봐줘</p>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title"><span class="hand">우리의 순간들</span><small>OUR MOMENTS</small></h2>
+    <div id="gallery"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title"><span class="hand">너에게 쓰는 편지</span><small>A LETTER FOR YOU</small></h2>
+    <div class="paper reveal" id="paper"></div>
+  </section>
+
+  <section class="ending reveal">
+    <p class="hearts">♥ ♥ ♥</p>
+    <p class="end-line" id="end-line"></p>
+    <p class="end-from" id="end-from"></p>
+    <button class="btn ghost" id="replay">처음부터 다시 보기</button>
+  </section>
+</main>
+
+<script>
+/* ==========================================================
+   ✏️ 여기만 고치면 돼요
+   ========================================================== */
+const CONFIG = {
+  name: "○○",              // 봉투·편지에 쓸 이름 (예: 지연)
+  call: "○○아",            // 부르는 말 (예: 지연아, 수아야)
+  from: "○○",              // 보내는 사람 (예: 민수)
+  birthday: "2026. 10. 27", // 생일 날짜
+
+  // 비밀번호. 비워두면("") 바로 봉투 화면부터 시작해요.
+  password: "",
+  passwordHint: "우리가 처음 만난 날은? (숫자 4자리)",
+
+  // 사진: photos 폴더에 넣고 파일명을 정확히 적어주세요.
+  // ⚠️ GitHub는 대소문자를 구분해요 (01.JPG ≠ 01.jpg)
+  photos: [
+    { src: "photos/01.jpg", caption: "처음 같이 간 곳",     date: "2025. 03. 15" },
+    { src: "photos/02.jpg", caption: "이날 너무 웃겼던 너", date: "2025. 05. 02" },
+    { src: "photos/03.jpg", caption: "여름 바다",           date: "2025. 08. 10" },
+    { src: "photos/04.jpg", caption: "작년 네 생일",        date: "2025. 10. 27" },
+  ],
+
+  // 편지: 문단마다 따옴표 하나씩. 줄바꿈은 자동이에요.
+  letter: [
+    "생일 축하해. 이 편지를 쓰려고 몇 번이나 지웠다가 다시 썼는지 몰라.",
+    "너랑 함께한 하루하루가 나한테는 다 선물 같았어. 별것 아닌 날에도 네가 있으면 특별한 날이 되더라.",
+    "올해도 내 옆에 있어줘서 정말 고마워. 앞으로 맞는 모든 생일도 내가 제일 먼저 축하해 줄게.",
+  ],
+  sign: "너를 사랑하는 ○○가",
+
+  ending: "태어나줘서 고마워",
+};
+/* ========================================================== */
+
+const $ = (s) => document.querySelector(s);
+const gate = $('#gate'), intro = $('#intro'), main = $('#main'), envelope = $('#envelope');
+let opened = false;
+
+function fill(){
+  document.title = `생일 축하해, ${CONFIG.call}`;
+  $('#gate-hint').textContent = CONFIG.passwordHint;
+  $('#intro-title').textContent = `${CONFIG.name}에게 편지가 도착했어요`;
+  $('#env-card').textContent = `To. ${CONFIG.name}`;
+  $('#hero-date').textContent = CONFIG.birthday;
+  $('#hero-name').textContent = CONFIG.call;
+  $('#end-line').textContent = CONFIG.ending;
+  $('#end-from').textContent = `From. ${CONFIG.from}`;
+
+  const gallery = $('#gallery');
+  CONFIG.photos.forEach((p, i) => {
+    const fig = document.createElement('figure');
+    fig.className = 'polaroid reveal';
+    const tilt = (i % 2 ? 2.2 : -2.4) + ((i % 3) - 1) * 0.6;
+    fig.style.setProperty('--r', tilt + 'deg');
+
+    const box = document.createElement('div');
+    box.className = 'img';
+    const img = new Image();
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.alt = p.caption || '';
+    img.onerror = () => { box.classList.add('empty'); box.textContent = `사진 ${String(i + 1).padStart(2, '0')}`; };
+    img.src = p.src;
+    box.appendChild(img);
+
+    const cap = document.createElement('figcaption');
+    if (p.caption){ const c = document.createElement('div'); c.className = 'cap'; c.textContent = p.caption; cap.appendChild(c); }
+    if (p.date){ const d = document.createElement('div'); d.className = 'date'; d.textContent = p.date; cap.appendChild(d); }
+
+    fig.append(box, cap);
+    gallery.appendChild(fig);
+  });
+
+  const paper = $('#paper');
+  const greet = document.createElement('p');
+  greet.className = 'greet';
+  greet.textContent = `${CONFIG.name}에게`;
+  paper.appendChild(greet);
+  CONFIG.letter.forEach(t => { const p = document.createElement('p'); p.textContent = t; paper.appendChild(p); });
+  const sign = document.createElement('p');
+  sign.className = 'sign';
+  sign.textContent = CONFIG.sign;
+  paper.appendChild(sign);
+}
+
+function observeReveals(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal:not(.show)').forEach(el => io.observe(el));
+}
+
+function showIntro(){
+  intro.hidden = false;
+  intro.classList.remove('fade');
+}
+
+function openLetter(){
+  if (opened) return;
+  opened = true;
+  envelope.classList.add('open');
+  setTimeout(() => {
+    intro.classList.add('fade');
+    setTimeout(() => {
+      intro.hidden = true;
+      main.hidden = false;
+      window.scrollTo(0, 0);
+      observeReveals();
+    }, 700);
+  }, 1800);
+}
+
+envelope.addEventListener('click', openLetter);
+envelope.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLetter(); } });
+
+$('#gate-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = $('#gate-input');
+  if (input.value.trim() === String(CONFIG.password)){
+    gate.classList.add('fade');
+    setTimeout(() => { gate.hidden = true; showIntro(); }, 600);
+  } else {
+    $('#gate-msg').textContent = '앗, 다시 생각해봐 🙂';
+    input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
+    input.select();
+  }
+});
+
+$('#replay').addEventListener('click', () => {
+  main.hidden = true;
+  envelope.classList.remove('open');
+  opened = false;
+  window.scrollTo(0, 0);
+  showIntro();
+});
+
+fill();
+if (CONFIG.password){ gate.hidden = false; } else { showIntro(); }
+</script>
+</body>
+</html>
